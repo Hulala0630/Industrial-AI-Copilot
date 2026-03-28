@@ -1,0 +1,44 @@
+[
+    {
+        "id": "A001",
+        "name": "Conveyor Jam",
+        "trigger": {
+            "sensor_blocked": true
+        },
+        "severity": "high",
+        "possible_cause": "An object is blocking the sensor area.",
+        "solution": [
+            "Clear the blocked object",
+            "Inspect the conveyor entry area",
+            "Reset the conveyor system"
+        ]
+    },
+    {
+        "id": "A002",
+        "name": "Robot Fault",
+        "trigger": {
+            "robot_error": true
+        },
+        "severity": "high",
+        "possible_cause": "The robot controller reported an error.",
+        "solution": [
+            "Check robot status",
+            "Inspect the robot error code",
+            "Perform fault reset if safe"
+        ]
+    },
+    {
+        "id": "A003",
+        "name": "System Stop",
+        "trigger": {
+            "conveyor_running": false
+        },
+        "severity": "medium",
+        "possible_cause": "The conveyor is currently not running.",
+        "solution": [
+            "Check whether stop condition is expected",
+            "Inspect active alarms",
+            "Restart the conveyor if safe"
+        ]
+    }
+]
