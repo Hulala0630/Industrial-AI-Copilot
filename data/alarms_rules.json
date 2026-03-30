@@ -1,0 +1,45 @@
+[
+    {
+        "id": "A001",
+        "name": "Conveyor Jam",
+        "severity": "high",
+        "trigger_logic": {
+            "conveyor.running": false,
+            "conveyor.entry_sensor_blocked": true
+        },
+        "possible_cause": "Object blocking conveyor entry while conveyor is stopped.",
+        "recommended_actions": [
+            "Inspect conveyor entry zone",
+            "Remove blocked object",
+            "Reset conveyor"
+        ]
+    },
+    {
+        "id": "A002",
+        "name": "Robot Fault",
+        "severity": "high",
+        "trigger_logic": {
+            "robot.fault": true
+        },
+        "possible_cause": "Robot controller reported a fault.",
+        "recommended_actions": [
+            "Check robot controller status",
+            "Inspect robot fault code",
+            "Perform reset if safe"
+        ]
+    },
+    {
+        "id": "A003",
+        "name": "Buffer Almost Full",
+        "severity": "medium",
+        "trigger_logic": {
+            "buffer.occupancy": 9
+        },
+        "possible_cause": "Buffer occupancy is close to capacity, which may block upstream flow.",
+        "recommended_actions": [
+            "Inspect downstream station",
+            "Clear buffer if possible",
+            "Resume production carefully"
+        ]
+    }
+]

@@ -1,5 +1,25 @@
 {
-    "conveyor_running": false,
-    "sensor_blocked": true,
-    "robot_error": false
+    "timestamp": "2026-03-30T18:30:00",
+    "line_id": "LINE-01",
+    "mode": "auto",
+    "cycle_running": false,
+    "cycle_count": 1245,
+    "conveyor": {
+        "running": false,
+        "speed_mps": 0.0,
+        "motor_temp_c": 62.5,
+        "entry_sensor_blocked": true,
+        "exit_sensor_blocked": false
+    },
+    "robot": {
+        "connected": true,
+        "running": false,
+        "fault": false,
+        "current_program": "PickAndPlace_A",
+        "last_cycle_time_s": 12.8
+    },
+    "buffer": {
+        "occupancy": 9,
+        "capacity": 10
+    }
 }

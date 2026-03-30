@@ -7,6 +7,7 @@ from config import MODEL_NAME
 from core.tools_definitions import tools
 from core.tools import get_system_state
 from core.tools import get_active_alarms
+from core.tools import get_production_context
 
 load_dotenv()
 
@@ -17,34 +18,37 @@ def execute_tool(tool_name):
         return get_system_state()
     elif tool_name == "get_active_alarms":
         return get_active_alarms()
+    elif tool_name == "get_production_context":
+        return get_production_context()
     else:
         return {"error": f"Unknown tool: {tool_name}"}
     
-
-def ask_llm(user_input):
+def load_system_prompt():
+    with open("prompts/system_prompt.md", "r", encoding="utf-8") as f:
+        return f.read()
+    
+def ask_llm(chat_history):
 
     messages=[
             {
                 "role": "system", 
-                "content": "You are an industrial assistant."},
-            {
-                "role": "user",
-                "content": user_input
-            }
-        ]
-    # Step 1: initial response from the assistant, which may include tool calls
+                "content":load_system_prompt()
+            }] + chat_history
+    
     response =client.chat.completions.create(
         model=MODEL_NAME,
         messages=messages,
         tools=tools,
     )
     message = response.choices[0].message
-    
-    # If there are no tool calls, return the assistant's response directly
+
     if not message.tool_calls:
-        return message.content
+        return {
+        "answer": message.content,
+        "tools_used": [],
+        "tool_results": {}
+    }
     
-    # If there are tool calls, we need to execute them and then send the results back to the assistant for a second response
     assistant_message = {
         "role": "assistant",
         "content": message.content or "",
@@ -64,10 +68,15 @@ def ask_llm(user_input):
         )
 
     messages.append(assistant_message)
-
+    
+    tools_used = []
+    tool_results = {}
     for tool_call in message.tool_calls:
         tool_name = tool_call.function.name
         tool_result = execute_tool(tool_name)
+
+        tools_used.append(tool_name)
+        tool_results[tool_name] = tool_result
 
         messages.append(
             {
@@ -81,5 +90,10 @@ def ask_llm(user_input):
         model=MODEL_NAME,
         messages=messages
     )
-
-    return second_response.choices[0].message.content
+    
+    final_answer = second_response.choices[0].message.content
+    return {
+        "answer": final_answer,
+        "tools_used": tools_used,
+        "tool_results": tool_results
+    }
