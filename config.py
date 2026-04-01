@@ -1,3 +1,0 @@
-MAIN_MODEL_NAME="gpt-4o"
-SUMMARY_MODEL_NAME="gpt-4o-mini"
-MEMORY_MODEL_NAME="gpt-4o-mini"
