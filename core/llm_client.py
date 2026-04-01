@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 import os
 import json
 
-from config import MODEL_NAME
+from config import MAIN_MODEL_NAME
 from core.tools_definitions import tools
 from core.tools import get_system_state
 from core.tools import get_active_alarms
@@ -27,16 +27,10 @@ def load_system_prompt():
     with open("prompts/system_prompt.md", "r", encoding="utf-8") as f:
         return f.read()
     
-def ask_llm(chat_history):
+def ask_llm(messages):
 
-    messages=[
-            {
-                "role": "system", 
-                "content":load_system_prompt()
-            }] + chat_history
-    
     response =client.chat.completions.create(
-        model=MODEL_NAME,
+        model=MAIN_MODEL_NAME,
         messages=messages,
         tools=tools,
     )
@@ -87,7 +81,7 @@ def ask_llm(chat_history):
         )
 
     second_response = client.chat.completions.create(
-        model=MODEL_NAME,
+        model=MAIN_MODEL_NAME,
         messages=messages
     )
     
