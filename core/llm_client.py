@@ -27,12 +27,12 @@ def load_system_prompt():
     with open("prompts/system_prompt.md", "r", encoding="utf-8") as f:
         return f.read()
     
-def ask_llm(messages):
+def ask_llm(messages, available_tools=None):
 
     response =client.chat.completions.create(
         model=MAIN_MODEL_NAME,
         messages=messages,
-        tools=tools,
+        tools=available_tools if available_tools is not None else tools,
     )
     message = response.choices[0].message
 

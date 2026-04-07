@@ -1,3 +1,6 @@
+def get_tools_by_names(tool_names):
+    return [tool for tool in tools if tool["function"]["name"] in tool_names]
+
 tools = [
     {
         "type": "function",

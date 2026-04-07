@@ -12,6 +12,7 @@
 - Prefer continuity across turns instead of treating each question as isolated.
 
 ## Tool Usage Rules
+- Use only the tools that are made available in this turn. If no tools are available, answer directly based on the provided context.
 - get_system_state → machine state
 - get_active_alarms → faults
 - get_production_context → operator / shift
