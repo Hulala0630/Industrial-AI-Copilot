@@ -1,4 +1,3 @@
-
 from openai import OpenAI
 from dotenv import load_dotenv
 import os
@@ -25,7 +24,7 @@ def extract_json(text: str) -> str:
     return text
 
 class Planner:
-    
+
     def __init__(self, model_name=PLAN_MODEL_NAME):
         self.model_name = model_name
 
@@ -41,11 +40,15 @@ class Planner:
                 {"role": "system", "content": system_prompt},
                 {
                     "role": "user",
-                    "content": json.dumps({
-                        "user_input": user_input,
-                        "summary": summary,
-                        "memory": memory
-                    }, ensure_ascii=False, indent=2)
+                    "content": json.dumps(
+                        {
+                            "user_input": user_input,
+                            "summary": summary,
+                            "memory": memory
+                        },
+                        ensure_ascii=False,
+                        indent=2
+                    )
                 }
             ]
         )
@@ -55,19 +58,19 @@ class Planner:
 
         try:
             plan = json.loads(cleaned)
-        except Exception:
+        except Exception as e:
+            print("DEBUG planner parse failed:", e)
+            print("DEBUG raw planner output:", raw)
             plan = {
-                "intent": "general_response",
-                "skill": "general_response",
+                "goal": "Respond to the user directly if possible.",
                 "target_entity": "",
                 "need_tools": False,
                 "tools": [],
-                "success_criteria": "Provide a direct answer if possible.",
-                "reason": "Fallback plan due to JSON parse failure."
+                "success_criteria": "Provide a useful direct response.",
+                "reason": "Fallback plan due to planner JSON parse failure."
             }
 
-        plan.setdefault("intent", "general_response")
-        plan.setdefault("skill", "general_response")
+        plan.setdefault("goal", "")
         plan.setdefault("target_entity", "")
         plan.setdefault("need_tools", False)
         plan.setdefault("tools", [])

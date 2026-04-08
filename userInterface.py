@@ -64,6 +64,11 @@ with st.sidebar:
                     st.json(step["detail"])
                 else:
                     st.write(step["detail"])
+            
+            if trace.get("execution_result"): 
+                st.write("### Observations")
+                for obs in trace["execution_result"].get("observations", []):
+                    st.write(f"- {obs}")
 
             st.write("### Post-turn State")
             st.json(trace.get("post_turn_state", {}))
